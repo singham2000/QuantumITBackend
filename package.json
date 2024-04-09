@@ -1,0 +1,28 @@
+{
+  "name": "quantumitbackend",
+  "version": "1.0.0",
+  "description": "This backend to handle various features at quantum backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singham2000/quantumitbackend.git"
+  },
+  "author": "Surya Pratap",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/singham2000/quantumitbackend/issues"
+  },
+  "homepage": "https://github.com/singham2000/quantumitbackend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "4.18.2",
+    "mongoose": "^8.3.1",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.0",
+    "validator": "^13.11.0"
+  }
+}
