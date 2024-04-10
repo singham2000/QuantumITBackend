@@ -1,6 +1,7 @@
 const ReviewModel = require("../models/customerModel");
 const catchAsyncError = require("../utils/catchAsyncError");
 const ErrorHandler = require("../utils/ErrorHandler");
+const mongoose = require("mongoose");
 
 exports.CreateReview = catchAsyncError(async (req, res, next) => {
   const { firstName, lastName, profilePicture, occupation, rating, message } =
@@ -55,12 +56,17 @@ exports.GetReviews = catchAsyncError(async (req, res, next) => {
 exports.DeleteReview = catchAsyncError(async (req, res, next) => {
   const { id } = req.query;
   try {
-    const result = ReviewModel.deleteOne(id);
+    const result = await ContactUsModel.deleteOne(new mongoose.Types.ObjectId(id));
     if (result.deletedCount)
-      res.status.json({
+      res.status(200).json({
         success: true,
         message: "Deleted Successfully",
+      }); else {
+      res.status(200).json({
+        success: false,
+        message: "Didn't find a matching query",
       });
+    }
   } catch (e) {
     return next(new ErrorHandler(`Error While deleting for ref.${e}`, 500));
   }

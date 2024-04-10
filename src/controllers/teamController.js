@@ -1,6 +1,7 @@
 const MemberModel = require("../models/memberModel");
 const catchAsyncError = require("../utils/catchAsyncError");
 const ErrorHandler = require("../utils/ErrorHandler");
+const mongoose = require("mongoose");
 
 exports.CreateMember = catchAsyncError(async (req, res, next) => {
   const { firstName, lastName, image, position } = req.body;
@@ -52,12 +53,17 @@ exports.GetAllMembers = catchAsyncError(async (req, res, next) => {
 exports.DeleteMember = catchAsyncError(async (req, res, next) => {
   const { id } = req.query;
   try {
-    const result = MemberModel.deleteOne(id);
+    const result = await ContactUsModel.deleteOne(new mongoose.Types.ObjectId(id));
     if (result.deletedCount)
-      res.status.json({
-        success: true,
-        message: "Deleted Successfully",
-      });
+    res.status(200).json({
+      success: true,
+      message: "Deleted Successfully",
+    }); else {
+    res.status(200).json({
+      success: false,
+      message: "Didn't find a matching query",
+    });
+  }
   } catch (e) {
     return next(new ErrorHandler(`Error While deleting for ref.${e}`, 500));
   }
