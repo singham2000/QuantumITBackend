@@ -26,7 +26,6 @@ const blogSchema = mongoose.Schema({
   },
   blogDataBrief: {
     type: String,
-    required: true,
     maxLenght: 200,
   },
   blogTitle: {
