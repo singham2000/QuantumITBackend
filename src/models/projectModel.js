@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const typeEnum = ["mobile", "desktop"];
+const typeEnum = ["mobileApp", "WebApp"];
 
 const appSchema = mongoose.Schema({
   image: {
@@ -17,7 +17,6 @@ const appSchema = mongoose.Schema({
   },
   shortDetail: {
     type: String,
-    required: true,
     maxlength: 200,
   },
   type: {
@@ -25,6 +24,17 @@ const appSchema = mongoose.Schema({
     required: true,
     enum: typeEnum,
   },
+});
+
+appSchema.pre("save", function (next) {
+  if (this.details && this.details.length > 200) {
+    this.shortDetail = this.details.substring(0, 200);
+    this.details = this.details;
+  } else {
+    this.shortDetail = this.details;
+    this.details = this.details;
+  }
+  next();
 });
 
 module.exports = mongoose.model("project", appSchema);

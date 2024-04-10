@@ -42,8 +42,10 @@ const blogSchema = mongoose.Schema({
 blogSchema.pre("save", function (next) {
   if (this.blogData && this.blogData.length > 200) {
     this.blogDataBrief = this.blogData.substring(0, 200);
+    this.blogData = this.blogData;
   } else {
     this.blogDataBrief = this.blogData;
+    this.blogData = this.blogData;
   }
   next();
 });
