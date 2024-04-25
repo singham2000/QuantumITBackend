@@ -13,11 +13,13 @@ const contactus = require("./src/routes/contactus");
 const projects = require("./src/routes/projects");
 const reviews = require("./src/routes/reviews");
 const team = require("./src/routes/team");
+const contributor = require("./src/routes/contributor");
 app.use("/api/blogs", blogs);
 app.use("/api/contactus", contactus);
 app.use("/api/projects", projects);
 app.use("/api/reviews", reviews);
 app.use("/api/team", team);
+app.use("/api/contributor", contributor);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
