@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 exports.CreateContributor = catchAsyncError(async (req, res, next) => {
 
     const { name, profileImage, numberOfArticles } = req.body;
+    console.log(name, profileImage, numberOfArticles);
 
     const contributor = new ContributorModel({ name, profileImage, numberOfArticles });
 
