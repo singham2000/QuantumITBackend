@@ -53,7 +53,7 @@ exports.GetProject = catchAsyncError(async (req, res, next) => {
   try {
     if (id) projects = await ProjectModel.findById(id);
     else {
-      projects = await ProjectModel.find().select("-details");
+      projects = await ProjectModel.find();
     }
   } catch (e) {
     return next(
@@ -67,7 +67,7 @@ exports.GetProject = catchAsyncError(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: "Fetched Successfully",
-    projects: projects,
+    project: projects,
   });
 });
 
@@ -240,7 +240,7 @@ exports.GetWebAppProject = catchAsyncError(async (req, res, next) => {
 exports.DeleteProject = catchAsyncError(async (req, res, next) => {
   const { id } = req.query;
   try {
-    const result = await ContactUsModel.deleteOne(new mongoose.Types.ObjectId(id));
+    const result = await ProjectModel.deleteOne(new mongoose.Types.ObjectId(id));
     if (result.deletedCount)
       res.status(200).json({
         success: true,
