@@ -4,13 +4,30 @@ const ErrorHandler = require("../utils/ErrorHandler");
 const mongoose = require("mongoose");
 
 exports.CreateProject = catchAsyncError(async (req, res, next) => {
-  const { image, appName, details, type } = req.body;
+  const {
+    name,
+    description,
+    clientName,
+    date,
+    liveLink,
+    category,
+    image,
+    keyPoints,
+    keyInsights,
+    aboutProject
+  } = req.body;
 
   const project = new ProjectModel({
+    name,
+    description,
+    clientName,
+    date,
+    liveLink,
+    category,
     image,
-    appName,
-    details,
-    type,
+    keyPoints,
+    keyInsights,
+    aboutProject
   });
   try {
     await project.save();
