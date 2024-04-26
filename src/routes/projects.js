@@ -16,6 +16,6 @@ router
 
 router.get('/web-app-projects', GetWebAppProject);
 
-router.get('mobile-app-projects', GetMobileAppProject);
+router.get('/mobile-app-projects', GetMobileAppProject);
 
 module.exports = router;
