@@ -31,7 +31,7 @@ exports.GetAllContributors = catchAsyncError(async (req, res, next) => {
         const contributors = await ContributorModel.find();
         res.status(200).json({
             success: true,
-            message: "Saved Succcessfully",
+            message: "Fetched Succcessfully",
             contributors,
         })
     } catch (error) {
