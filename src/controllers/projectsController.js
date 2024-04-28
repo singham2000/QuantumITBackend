@@ -2,6 +2,7 @@ const ProjectModel = require("../models/projectModel");
 const catchAsyncError = require("../utils/catchAsyncError");
 const ErrorHandler = require("../utils/ErrorHandler");
 const mongoose = require("mongoose");
+const { uploadImage } = require("../utils/aws");
 
 exports.CreateProject = catchAsyncError(async (req, res, next) => {
   const {
@@ -14,8 +15,18 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
     image,
     keyPoints,
     keyInsights,
-    aboutProject
+    aboutProject,
   } = req.body;
+  const file = req.file;
+
+  if (!name || !description || !clientName || !date || !liveLink || !category || !image || !keyPoints || !keyInsights || !aboutProject) {
+    return res.status(400).json({
+      success: false,
+      message: 'Empty Fields'
+    })
+  };
+
+  const loc = await uploadImage(file);
 
   const project = new ProjectModel({
     name,
@@ -24,7 +35,7 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
     date,
     liveLink,
     category,
-    image,
+    image: loc,
     keyPoints,
     keyInsights,
     aboutProject

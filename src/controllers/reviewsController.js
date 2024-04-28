@@ -2,15 +2,26 @@ const ReviewModel = require("../models/customerModel");
 const catchAsyncError = require("../utils/catchAsyncError");
 const ErrorHandler = require("../utils/ErrorHandler");
 const mongoose = require("mongoose");
+const { uploadImage } = require("../utils/aws");
 
 exports.CreateReview = catchAsyncError(async (req, res, next) => {
-  const { firstName, lastName, profilePicture, occupation, rating, message } =
+  const { firstName, lastName, occupation, rating, message } =
     req.body;
+  const file = req.file;
+
+  const loc = await uploadImage(file);
+
+  if (!firstName || !lastName || !occupation || !rating || !message) {
+    return res.status(400).json({
+      success: false,
+      message: 'Empty Fields'
+    })
+  };
 
   const review = new ReviewModel({
     firstName,
     lastName,
-    profilePicture,
+    profilePicture: loc,
     occupation,
     rating,
     message,
