@@ -5,10 +5,11 @@ const {
   GetAllQueries,
   DeleteQuery,
 } = require("../controllers/contactusController");
+const { upload } = require('../utils/aws');
 
 router
-  .route("/contactUs")
-  .post(CreateContactUsQuery)
+  .route("/contactus")
+  .post(upload.any(), CreateContactUsQuery)
   .get(GetAllQueries)
   .delete(DeleteQuery);
 module.exports = router;

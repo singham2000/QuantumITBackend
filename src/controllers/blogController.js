@@ -2,33 +2,78 @@ const BlogModel = require("../models/blogModel");
 const catchAsyncError = require("../utils/catchAsyncError");
 const ErrorHandler = require("../utils/ErrorHandler");
 const mongoose = require("mongoose");
+const { uploadImage } = require('../utils/aws');
 
 exports.CreateBlog = catchAsyncError(async (req, res, next) => {
   const {
-    image,
-    blogData,
-    blogTitle,
-    categories,
-    profilePicture,
-    authorName,
-    occupation,
+    title,
+    description,
+    category,
+    readTime,
+    detailedInsights,
+    keyPoints,
+    keyInsights,
+    quote,
+    AuthorName,
+    AuthorDesignation,
+    AuthorAbout,
+    facebook,
+    twitter,
+    instagram
   } = req.body;
+  const blogImage = req.files[0];
+  const authorProfile = req.files[1];
+
+  const blogImageLoc = await uploadImage(blogImage);
+  const authorProfileLoc = await uploadImage(authorProfile);
+
+  if (
+    !title ||
+    !description ||
+    !category ||
+    !readTime ||
+    !detailedInsights ||
+    !keyPoints ||
+    !keyInsights ||
+    !quote ||
+    !facebook ||
+    !twitter ||
+    !instagram
+  ) {
+    res.status(400).json({
+      success: false,
+      message: "Empty fields"
+    })
+  }
 
   const authorObj = {
-    profilePicture: profilePicture,
-    authorName: authorName,
-    occupation: occupation,
+    authorName: AuthorName,
+    profileImg: authorProfileLoc,
+    designation: AuthorDesignation,
+    about: AuthorAbout,
+    socialMedia: {
+      facebook,
+      twitter,
+      instagram
+    }
   };
 
-  const blog = new BlogModel({
-    image,
-    blogData,
-    blogTitle,
-    categories,
-    author: authorObj,
-  });
   try {
-    await blog.save();
+    if (authorObj) {
+      var blog = new BlogModel({
+        title,
+        description,
+        category,
+        image: blogImageLoc,
+        readTime,
+        detailedInsights,
+        keyPoints,
+        keyInsights,
+        quote,
+        author: authorObj
+      });
+      await blog.save();
+    }
   } catch (e) {
     return next(
       new ErrorHandler(
@@ -49,9 +94,11 @@ exports.GetBlog = catchAsyncError(async (req, res, next) => {
   const { id } = req.query;
   let blogs;
   try {
-    if (id) blogs = await BlogModel.findById(id);
+    if (id) {
+      blogs = await BlogModel.findById(new mongoose.Types.ObjectId(id));
+    }
     else {
-      blogs = await BlogModel.find().select("-blogData");
+      blogs = await BlogModel.find();
     }
   } catch (e) {
     return next(
@@ -72,17 +119,17 @@ exports.GetBlog = catchAsyncError(async (req, res, next) => {
 exports.DeleteBlog = catchAsyncError(async (req, res, next) => {
   const { id } = req.query;
   try {
-    const result = await ContactUsModel.deleteOne(new mongoose.Types.ObjectId(id));
+    const result = await BlogModel.deleteOne(new mongoose.Types.ObjectId(id));
     if (result.deletedCount)
-    res.status(200).json({
-      success: true,
-      message: "Deleted Successfully",
-    }); else {
-    res.status(200).json({
-      success: false,
-      message: "Didn't find a matching query",
-    });
-  }
+      res.status(200).json({
+        success: true,
+        message: "Deleted Successfully",
+      }); else {
+      res.status(200).json({
+        success: false,
+        message: "Didn't find a matching query",
+      });
+    }
   } catch (e) {
     return next(new ErrorHandler(`Error While deleting for ref.${e}`, 500));
   }

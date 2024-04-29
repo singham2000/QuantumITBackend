@@ -17,12 +17,14 @@ const formSchema = mongoose.Schema({
   },
   companyName: {
     type: String,
-    required: true,
   },
   message: {
     type: String,
     required: true,
   },
+  resume: {
+    type: String
+  }
 });
 
 module.exports = mongoose.model("contactUsForm", formSchema);

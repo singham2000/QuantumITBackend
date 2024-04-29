@@ -14,12 +14,17 @@ const projects = require("./src/routes/projects");
 const reviews = require("./src/routes/reviews");
 const team = require("./src/routes/team");
 const contributor = require("./src/routes/contributor");
+const faq = require("./src/routes/faq");
+const feedback = require("./src/routes/feedback");
+
 app.use("/api/blogs", blogs);
 app.use("/api/contactus", contactus);
 app.use("/api/projects", projects);
 app.use("/api/reviews", reviews);
 app.use("/api/team", team);
 app.use("/api/contributor", contributor);
+app.use("/api/faq", faq);
+app.use("/api/feedback", feedback);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

@@ -5,7 +5,8 @@ const {
   GetBlog,
   DeleteBlog,
 } = require("../controllers/blogController");
+const { upload } = require('../utils/aws');
 
-router.route("/blog").post(CreateBlog).get(GetBlog).delete(DeleteBlog);
+router.route("/blog").post(upload.any(), CreateBlog).get(GetBlog).delete(DeleteBlog);
 
 module.exports = router;

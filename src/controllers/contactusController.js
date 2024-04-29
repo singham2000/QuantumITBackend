@@ -2,9 +2,18 @@ const mongoose = require("mongoose");
 const ContactUsModel = require("../models/contactusModel");
 const catchAsyncError = require("../utils/catchAsyncError");
 const ErrorHandler = require("../utils/ErrorHandler");
+const { uploadFile } = require("../utils/aws");
 
 exports.CreateContactUsQuery = catchAsyncError(async (req, res, next) => {
-  const { firstName, lastName, email, companyName, message } = req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    companyName,
+    message
+  } = req.body;
+
+  const resumeLink = await uploadFile(req.files[0]);
 
   const query = new ContactUsModel({
     firstName,
@@ -12,6 +21,7 @@ exports.CreateContactUsQuery = catchAsyncError(async (req, res, next) => {
     email,
     companyName,
     message,
+    resume: resumeLink
   });
   try {
     await query.save();

@@ -1,53 +1,56 @@
 const mongoose = require("mongoose");
 
-const authorSchema = mongoose.Schema({
-  profilePicture: {
-    type: String,
-    required: true,
-  },
-  authorName: {
-    type: String,
-    required: true,
-  },
-  occupation: {
-    type: String,
-    required: true,
-  },
-});
-
 const blogSchema = mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: Array,
+    required: true,
+  },
   image: {
     type: String,
     required: true,
   },
-  blogData: {
+  readTime: {
     type: String,
     required: true,
   },
-  blogDataBrief: {
-    type: String,
-    maxLenght: 200,
-  },
-  blogTitle: {
+  detailedInsights: {
     type: String,
     required: true,
   },
-  categories: {
+  keyPoints: {
     type: Array,
     required: true,
   },
-  author: { authorSchema },
+  keyInsights: {
+    type: Array,
+    required: true,
+  },
+  quote: {
+    type: String,
+    required: true,
+  },
+  author: {
+    type: {
+      authorName: String,
+      profileImg: String,
+      designation: String,
+      about: String,
+      socialMedia: {
+        facebook: String,
+        twitter: String,
+        instagram: String
+      }
+    }
+  }
 });
 
-blogSchema.pre("save", function (next) {
-  if (this.blogData && this.blogData.length > 200) {
-    this.blogDataBrief = this.blogData.substring(0, 200);
-    this.blogData = this.blogData;
-  } else {
-    this.blogDataBrief = this.blogData;
-    this.blogData = this.blogData;
-  }
-  next();
-});
 
 module.exports = mongoose.model("blog", blogSchema);
