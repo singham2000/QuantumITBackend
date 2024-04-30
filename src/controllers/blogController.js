@@ -95,7 +95,7 @@ exports.GetBlog = catchAsyncError(async (req, res, next) => {
   let blogs;
   try {
     if (id) {
-      blogs = await BlogModel.findById(new mongoose.Types.ObjectId(id));
+      blogs = await BlogModel.findById(new mongoose.Types.ObjectId(id)).select('-detailedInsights -keyPoints -keyInsights -quote -author.authorName -author.socialMedia -author.designation -author.about');
     }
     else {
       blogs = await BlogModel.find();

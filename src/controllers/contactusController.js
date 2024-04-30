@@ -12,8 +12,9 @@ exports.CreateContactUsQuery = catchAsyncError(async (req, res, next) => {
     companyName,
     message
   } = req.body;
-
-  const resumeLink = await uploadFile(req.files[0]);
+  let resumeLink;
+  if (req.files.length > 0)
+    resumeLink = await uploadFile(req.files[0]);
 
   const query = new ContactUsModel({
     firstName,
