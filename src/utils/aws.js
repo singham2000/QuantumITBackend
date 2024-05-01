@@ -13,12 +13,12 @@ const s3Client = new S3Client({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
     },
-    region: process.env.AWS_SECRET_ACCESS_KEY
+    region: process.env.AWS_REGION
 });
 
 exports.uploadImage = (file) => {
     const params = {
-        Bucket: 'singham',
+        Bucket: process.env.AWS_BUCKET_NAME,
         Key: 'profile_pictures/' + file.originalname,
         Body: file.buffer,
         ContentType: file.mimetype
@@ -39,7 +39,7 @@ exports.uploadImage = (file) => {
 
 exports.uploadFile = (file) => {
     const params = {
-        Bucket: 'singham',
+        Bucket: process.env.AWS_BUCKET_NAME,
         Key: 'files/' + file.originalname,
         Body: file.buffer,
         ContentType: file.mimetype
