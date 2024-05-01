@@ -8,9 +8,11 @@ const {
   GetWebAppProject
 } = require("../controllers/projectsController");
 
+const { upload } = require('../utils/aws');
+
 router
   .route("/project")
-  .post(CreateProject)
+  .post(upload.any(), CreateProject)
   .get(GetProject)
   .delete(DeleteProject);
 

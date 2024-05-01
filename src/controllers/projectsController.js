@@ -17,9 +17,9 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
     keyInsights,
     aboutProject,
   } = req.body;
-  const file = req.file;
+  const file = req.files[0];
 
-  if (!name || !description || !clientName || !date || !liveLink || !category || !image || !keyPoints || !keyInsights || !aboutProject) {
+  if (!name || !description || !clientName || !date || !liveLink || !category || !keyPoints || !keyInsights || !aboutProject) {
     return res.status(400).json({
       success: false,
       message: 'Empty Fields'
