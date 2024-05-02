@@ -28,7 +28,7 @@ exports.uploadImage = (file) => {
         s3Client.send(new PutObjectCommand(params))
             .then((data) => {
                 if (data['$metadata'].httpStatusCode === 200) {
-                    resolve(`https://singham.s3.ap-southeast-2.amazonaws.com/Quantum/${encodeToHttpLink(file.originalname)}`);
+                    resolve(`https://singham.s3.ap-southeast-2.amazonaws.com/profile_pictures/${encodeToHttpLink(file.originalname)}`);
                 }
             })
             .catch((err) => {
