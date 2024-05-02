@@ -3,9 +3,7 @@ const { Readable } = require('stream');
 const multer = require("multer");
 
 function encodeToHttpLink(inputString) {
-    const replacedString = inputString.replace(/\s+/g, '+');
-    const encodedString = encodeURIComponent(replacedString);
-    return encodedString;
+    return inputString.replace(/\s/g, '');
 }
 
 const s3Client = new S3Client({
@@ -19,7 +17,7 @@ const s3Client = new S3Client({
 exports.uploadImage = (file) => {
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: 'profile_pictures/' + file.originalname,
+        Key: 'profile_pictures/' + encodeToHttpLink(file.originalname),
         Body: file.buffer,
         ContentType: file.mimetype
     };
@@ -40,7 +38,7 @@ exports.uploadImage = (file) => {
 exports.uploadFile = (file) => {
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: 'files/' + file.originalname,
+        Key: 'files/' + encodeToHttpLink(file.originalname),
         Body: file.buffer,
         ContentType: file.mimetype
     };
