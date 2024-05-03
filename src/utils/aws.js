@@ -5,7 +5,6 @@ const multer = require("multer");
 function encodeToHttpLink(inputString) {
     return inputString.replace(/\s/g, '');
 }
-
 const s3Client = new S3Client({
     credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -26,7 +25,7 @@ exports.uploadImage = (file) => {
         s3Client.send(new PutObjectCommand(params))
             .then((data) => {
                 if (data['$metadata'].httpStatusCode === 200) {
-                    resolve(`https://singham.s3.ap-southeast-2.amazonaws.com/profile_pictures/${encodeToHttpLink(file.originalname)}`);
+                    resolve(`https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/profile_pictures/${encodeToHttpLink(file.originalname)}`);
                 }
             })
             .catch((err) => {
@@ -47,7 +46,7 @@ exports.uploadFile = (file) => {
         s3Client.send(new PutObjectCommand(params))
             .then((data) => {
                 if (data['$metadata'].httpStatusCode === 200) {
-                    resolve(`https://singham.s3.ap-southeast-2.amazonaws.com/files/${encodeToHttpLink(file.originalname)}`);
+                    resolve(`https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/files/${encodeToHttpLink(file.originalname)}`);
                 }
             })
             .catch((err) => {
