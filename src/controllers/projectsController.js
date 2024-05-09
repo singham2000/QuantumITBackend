@@ -12,12 +12,12 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
     date,
     liveLink,
     category,
-    image,
     keyPoints,
     keyInsights,
     aboutProject,
   } = req.body;
   const file = req.files[0];
+  const fileTwo = req.files[1];
 
   if (!name || !description || !clientName || !date || !liveLink || !category || !keyPoints || !keyInsights || !aboutProject) {
     return res.status(400).json({
@@ -27,6 +27,8 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
   };
 
   const loc = await uploadImage(file);
+  const loc2 = await uploadImage(fileTwo);
+
 
   const project = new ProjectModel({
     name,
@@ -36,6 +38,7 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
     liveLink,
     category,
     image: loc,
+    imageTwo: loc2,
     keyPoints,
     keyInsights,
     aboutProject

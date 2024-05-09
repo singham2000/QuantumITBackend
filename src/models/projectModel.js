@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 const appSchema = mongoose.Schema({
   name: {
     type: String,
@@ -29,6 +28,9 @@ const appSchema = mongoose.Schema({
   image: {
     type: String,
     required: true,
+  },
+  imageTwo: {
+    type: String,
   },
   keyPoints: {
     type: Array,
