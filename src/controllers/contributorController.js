@@ -44,6 +44,31 @@ exports.GetAllContributors = catchAsyncError(async (req, res, next) => {
     }
 });
 
+exports.UpdateContributor = catchAsyncError(async (req, res, next) => {
+    const { id } = req.query;
+    const { name, profileImage, numberOfArticles } = req.body;
+
+    if (!id) {
+        return res.status('400').json({
+            success: false,
+            message: 'Id is required',
+        })
+    }
+    const contributor = await ContributorModel.findById(id);
+
+    if (name) contributor.name = name;
+    if (profileImage) contributor.profileImage = profileImage;
+    if (numberOfArticles) contributor.numberOfArticles = numberOfArticles;
+
+    await contributor.save();
+
+    res.status(200).json({
+        success: true,
+        message: 'Updated contributor'
+    });
+
+});
+
 exports.DeleteContributor = catchAsyncError(async (req, res, next) => {
     const { id } = req.query;
     try {
