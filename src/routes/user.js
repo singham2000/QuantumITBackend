@@ -5,8 +5,6 @@ const {
     login
 } = require("../controllers/userController");
 
-router
-    .route("/user")
-    .post(signupAdmin)
-    .get(login)
+router.route("/user").post(signupAdmin)
+router.route('/register').post(login)
 module.exports = router;

@@ -15,6 +15,7 @@ const reviews = require("./src/routes/reviews");
 const team = require("./src/routes/team");
 const contributor = require("./src/routes/contributor");
 const faq = require("./src/routes/faq");
+const user = require("./src/routes/user");
 const feedback = require("./src/routes/feedback");
 
 app.use("/api/blogs", blogs);
@@ -24,6 +25,7 @@ app.use("/api/reviews", reviews);
 app.use("/api/team", team);
 app.use("/api/contributor", contributor);
 app.use("/api/faq", faq);
+app.use("/api/users", user);
 app.use("/api/feedback", feedback);
 
 app.use((err, req, res, next) => {
