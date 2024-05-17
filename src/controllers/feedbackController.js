@@ -71,11 +71,11 @@ exports.GetFeedback = catchAsyncError(async (req, res, next) => {
                 });
             }
         } else {
-            faqs = await FeedbackModel.find();
+            feedbacks = await FeedbackModel.find();
             res.status(200).json({
                 success: true,
                 message: "Fetched Successfully",
-                faqs: faqs,
+                feedbacks: feedbacks,
             });
         }
     } catch (error) {
