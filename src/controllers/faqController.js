@@ -9,7 +9,6 @@ exports.CreateFaq = catchAsyncError(async (req, res, next) => {
         question,
         description,
         clientName,
-        date,
         keyPoints,
         keyInsights,
         answer
@@ -26,7 +25,7 @@ exports.CreateFaq = catchAsyncError(async (req, res, next) => {
         question,
         description,
         clientName,
-        date,
+        date: new Date(),
         keyPoints,
         keyInsights,
         answer

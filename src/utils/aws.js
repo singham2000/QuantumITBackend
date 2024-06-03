@@ -68,7 +68,7 @@ exports.upload = multer({
     storage,
     // fileFilter,
     limits: {
-        fileSize: 2006600,
+        fileSize: 25 * 1024 * 1024,
         files: 5,
     },
 });
