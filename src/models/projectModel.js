@@ -27,7 +27,6 @@ const appSchema = mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
   },
   imageTwo: {
     type: String,

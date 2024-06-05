@@ -16,50 +16,84 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
     keyInsights,
     aboutProject,
   } = req.body;
-  const file = req.files[0];
-  const fileTwo = req.files[1];
+  const file = req.files?.[0];
+  const fileTwo = req.files?.[1];
 
   if (!name || !description || !clientName || !date || !liveLink || !category || !keyPoints || !keyInsights || !aboutProject) {
     return res.status(400).json({
       success: false,
       message: 'Empty Fields'
-    })
-  };
+    });
+  }
 
-  const loc = await uploadImage(file);
-  const loc2 = await uploadImage(fileTwo);
+  let loc, loc2;
+  if (file) {
+    loc = await uploadImage(file);
+  }
+  if (fileTwo) {
+    loc2 = await uploadImage(fileTwo);
+  }
 
-
-  const project = new ProjectModel({
-    name,
-    description,
-    clientName,
-    date,
-    liveLink,
-    category,
-    image: loc,
-    imageTwo: loc2,
-    keyPoints,
-    keyInsights,
-    aboutProject
-  });
   try {
-    await project.save();
+    let project = await ProjectModel.findOne({
+      name,
+      category,
+      clientName,
+    });
+
+    if (!project) {
+      project = new ProjectModel({
+        name,
+        description,
+        clientName,
+        date,
+        liveLink,
+        category,
+        image: loc,
+        imageTwo: loc2,
+        keyPoints,
+        keyInsights,
+        aboutProject
+      });
+
+      await project.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Saved Successfully",
+        project,
+      });
+    } else {
+      if (name) project.name = name;
+      if (description) project.description = description;
+      if (clientName) project.clientName = clientName;
+      if (date) project.date = date;
+      if (liveLink) project.liveLink = liveLink;
+      if (category) project.category = category;
+      if (req.files?.[0]) project.image = loc;
+      if (req.files?.[1]) project.imageTwo = loc2;
+      if (keyPoints) project.keyPoints = keyPoints;
+      if (keyInsights) project.keyInsights = keyInsights;
+      if (aboutProject) project.aboutProject = aboutProject;
+      
+      await project.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Updated Successfully",
+        project,
+      });
+    }
   } catch (e) {
     return next(
       new ErrorHandler(
-        `There is some error saving your project with backend for ref. ${e}`,
+        `There was an error saving your project to the backend: ${e.message}`,
         500,
       ),
     );
   }
-
-  res.status(200).json({
-    success: true,
-    message: "Saved Succcessfully",
-    project,
-  });
 });
+
 
 exports.GetProject = catchAsyncError(async (req, res, next) => {
   const { id } = req.query;

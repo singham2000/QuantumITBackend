@@ -14,7 +14,7 @@ exports.CreateFaq = catchAsyncError(async (req, res, next) => {
         answer
     } = req.body;
 
-    if (!question || !description || !clientName || !date || !keyPoints || !keyInsights || !answer) {
+    if (!question || !description || !clientName || !keyPoints || !keyInsights || !answer) {
         res.status(400).json({
             success: false,
             message: 'Empty Fields'
