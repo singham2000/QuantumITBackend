@@ -31,6 +31,9 @@ const appSchema = mongoose.Schema({
   imageTwo: {
     type: String,
   },
+  portfolioImage: {
+    type: String
+  },
   keyPoints: {
     type: Array,
     required: true,

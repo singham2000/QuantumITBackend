@@ -18,6 +18,7 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
   } = req.body;
   const file = req.files?.[0];
   const fileTwo = req.files?.[1];
+  const fileThree = req.files?.[3];
 
   if (!name || !description || !clientName || !date || !liveLink || !category || !keyPoints || !keyInsights || !aboutProject) {
     return res.status(400).json({
@@ -26,13 +27,25 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
     });
   }
 
-  let loc, loc2;
+  let loc, loc2, loc3;
+
+  const uploadPromises = [];
+
   if (file) {
-    loc = await uploadImage(file);
+    uploadPromises.push(uploadImage(file));
   }
   if (fileTwo) {
-    loc2 = await uploadImage(fileTwo);
+    uploadPromises.push(uploadImage(fileTwo));
   }
+  if (fileThree) {
+    uploadPromises.push(uploadImage(fileThree));
+  }
+
+  const [locResult, loc2Result, loc3Result] = await Promise.all(uploadPromises);
+
+  loc = locResult || null;
+  loc2 = loc2Result || null;
+  loc3 = loc3Result || null;
 
   try {
     let project = await ProjectModel.findOne({
@@ -72,10 +85,11 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
       if (category) project.category = category;
       if (req.files?.[0]) project.image = loc;
       if (req.files?.[1]) project.imageTwo = loc2;
+      if (req.files?.[2]) project.portfolioImage = loc3;
       if (keyPoints) project.keyPoints = keyPoints;
       if (keyInsights) project.keyInsights = keyInsights;
       if (aboutProject) project.aboutProject = aboutProject;
-      
+
       await project.save();
 
       return res.status(200).json({
