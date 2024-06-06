@@ -18,7 +18,7 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
   } = req.body;
   const file = req.files?.[0];
   const fileTwo = req.files?.[1];
-  const fileThree = req.files?.[3];
+  const fileThree = req.files?.[2];
 
   if (!name || !description || !clientName || !date || !liveLink || !category || !keyPoints || !keyInsights || !aboutProject) {
     return res.status(400).json({
@@ -64,6 +64,7 @@ exports.CreateProject = catchAsyncError(async (req, res, next) => {
         category,
         image: loc,
         imageTwo: loc2,
+        portfolioImage: loc3,
         keyPoints,
         keyInsights,
         aboutProject
