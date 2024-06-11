@@ -1,4 +1,4 @@
-const { default: mongoose } = require('mongoose');
+const mongoose = require("mongoose");
 const FeedbackModel = require('../models/cutomerFeedback');
 const catchAsyncError = require('../utils/catchAsyncError');
 const ErrorHandler = require("../utils/ErrorHandler");
@@ -80,5 +80,27 @@ exports.GetFeedback = catchAsyncError(async (req, res, next) => {
         }
     } catch (error) {
         return next(new ErrorHandler(`Error While fetching for ref.${error}`, 500));
+    }
+});
+
+exports.DeleteFeedback = catchAsyncError(async (req, res, next) => {
+    const { id } = req.query;
+    if (!id)
+        return res.status(404).json({
+            success: false,
+            message: 'Id does not exist',
+        });
+
+    const result = await FeedbackModel.deleteOne(new mongoose.Types.ObjectId(id));
+    if (result.deletedCount)
+        return res.status(200).json({
+            success: true,
+            message: "Deleted Successfully",
+        });
+    else {
+        return res.status(200).json({
+            success: false,
+            message: "Didn't find a matching query",
+        });
     }
 });
